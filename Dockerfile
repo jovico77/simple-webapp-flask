@@ -1,10 +1,11 @@
-FROM ubuntu
+FROM python:3.12-slim
 
-RUN apt-get update
-RUN apt-get install -y python3-flask
+WORKDIR /app
 
-COPY app.py /opt/app.py
+COPY requirements.txt .
 
-ENV FLASK_APP=/opt/app.py
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app.py .
 
 ENTRYPOINT ["flask", "run", "--host=0.0.0.0"]

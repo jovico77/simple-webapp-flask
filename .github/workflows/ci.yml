@@ -35,3 +35,20 @@ jobs:
 
       - name: Build Docker Image
         run: docker build -t simple-webapp-flask .
+
+      - name: Run Docker Container
+        run: docker run -d -p 5000:5000 simple-webapp-flask
+
+      - name: Wait for the container to start
+        run: sleep 5
+
+      - name: Test the Flask Application
+        run: |
+          for i in {1..10}; do
+              if curl -fsS http://localhost:5000; then
+                exit 0
+              fi
+              sleep 2
+            done
+
+            exit 1
