@@ -37,7 +37,7 @@ jobs:
         run: docker build -t simple-webapp-flask .
 
       - name: Run Docker Container
-        run: docker run -d -p 5000:5000 simple-webapp-flask
+        run: docker run -d -p 5000:5000 --name flask-app simple-webapp-flask
 
       - name: Wait for the container to start
         run: sleep 5
@@ -52,3 +52,10 @@ jobs:
             done
 
             exit 1
+
+      - name: Stop Docker Container
+        if: always()
+        run: |
+         docker stop flask-app || true
+         docker rm flask-app || true
+      
